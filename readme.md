@@ -241,13 +241,13 @@ Para manusear múltiplos objetos podemos determinar uma classe agregadora, tal c
 
 ### arquivo Registro.java
 
-	para podermos distinguir livros de mesma obra assim como usuários, usamos hashmaps para identificar cada unidade por id.
+	//para podermos distinguir livros de mesma obra assim como usuários, usamos hashmaps para identificar cada unidade por id.
 	import java.util.HashMap;
 
 	public class Registro {
 		private HashMap<int, Livro> livros = new HashMap<int, Livro>();
 		private HashMap<int, Usuario> usuarios = new HashMap<int, Usuario>();
-		private Emprestimo[] emprestimos;
+		private HashMap<int, Emprestimo> emprestimos = new HashMap<int, Emprestimo>();
 		
 		//supomos que o usuario forneça um id único para evitar ter de escrever uma funcao para gerar eles.
 		Usuario addUsuario(int id, String nome){
@@ -262,15 +262,33 @@ Para manusear múltiplos objetos podemos determinar uma classe agregadora, tal c
 			return newLivro;
 		}
 		
-		Emprestimo addEmprestimo(int idUsuario, int idLivro, double prazo){
+		Emprestimo addEmprestimo(int idUsuario, int idLivro, int idEmprestimo, double prazo){
 			Usuario usuario = this.usuarios.get(idUsuario);
 			Livro livro = this.livros.get(idLivro);
+			
 			Emprestimo newEmprestimo = new Emprestimo(usuario, livro, prazo);
-			return newEmprestimo;
+			
+			this.emprestimos.put(idEmprestimo, newEmprestimo);
+			
+			return newEmprestimo
 		}
 		
+		void remEmprestimo(int idEmprestimo){
+			this.emprestimos.remove(idEmprestimo);
+		}
 		//...
 		
 	}
+	
+# 12. Projeto orientado a objetos 2
 
 ### arquivo Main.java
+
+	public class Main {
+		public static void main() {
+			Registro.addUsuario(300, "Pedro");
+			Registro.addLivro(250, "Arte da Guerra", "Sun Tzu", "Estratégia");
+			Registro.addEmprestimo(300, 250, 1, 3600);
+			Registro.remEmprestimo(1);
+		}
+	}
