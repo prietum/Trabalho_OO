@@ -1,3 +1,5 @@
+**ATENÇÃO: o código a seguir está bastante simplificado.**
+
 # 1. Defina o que é Orientação a Objetos
 A programação orientada a objetos é uma técnica de programação que implementa algoritmos através de estruturas de dados chamadas 'objetos', que podem armazenar dados e comportamentos e interagir entre si. É útil pois pode abstrair códigos ininteligíveis em sentenças simples, como 'Programa.iniciar()'.
 	
@@ -204,3 +206,71 @@ Para manusear múltiplos objetos podemos determinar uma classe agregadora, tal c
 # 11. Projeto orientado a objetos
 
 ![grafo11](./11.png)
+
+### arquivo Livro.java
+
+	public class Livro {
+		private String nome;
+		private String autor;
+		private String genero;
+		private int id;
+		
+		//...
+	}
+
+### arquivo Usuario.java
+
+	public class Usuario {
+		private String nome;
+		private int id;
+		
+		//...
+	}
+
+### arquivo Emprestimo.java
+
+	//agrega Usuario e Livro
+
+	public class Emprestimo {
+		private Usuario usuario;
+		private Livro livro;
+		private double prazo;
+		
+		//...
+	}
+
+### arquivo Registro.java
+
+	para podermos distinguir livros de mesma obra assim como usuários, usamos hashmaps para identificar cada unidade por id.
+	import java.util.HashMap;
+
+	public class Registro {
+		private HashMap<int, Livro> livros = new HashMap<int, Livro>();
+		private HashMap<int, Usuario> usuarios = new HashMap<int, Usuario>();
+		private Emprestimo[] emprestimos;
+		
+		//supomos que o usuario forneça um id único para evitar ter de escrever uma funcao para gerar eles.
+		Usuario addUsuario(int id, String nome){
+			Usuario newUsuario = new Usuario(id, nome);
+			this.usuarios.put(id, newUsuario);
+			return newUsuario;
+		}
+		
+		Livro addLivro(int id, String nome, String autor, String genero){
+			Livro newLivro = new Livro(id, nome, autor, genero);
+			this.livros.put(id, newLivro);
+			return newLivro;
+		}
+		
+		Emprestimo addEmprestimo(int idUsuario, int idLivro, double prazo){
+			Usuario usuario = this.usuarios.get(idUsuario);
+			Livro livro = this.livros.get(idLivro);
+			Emprestimo newEmprestimo = new Emprestimo(usuario, livro, prazo);
+			return newEmprestimo;
+		}
+		
+		//...
+		
+	}
+
+### arquivo Main.java
